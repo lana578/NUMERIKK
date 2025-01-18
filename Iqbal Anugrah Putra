@@ -1,0 +1,28 @@
+import numpy as np
+
+def gauss_seidel(A, b, tol=1e-5, max_iter=100):
+    n = len(A)
+    x = np.zeros(n)  # Inisialisasi vektor solusi dengan nol
+
+    for _ in range(max_iter):
+        x_baru = np.copy(x)
+
+        for i in range(n):
+            sigma = sum(A[i, j] * x_baru[j] for j in range(n) if j != i)
+            x_baru[i] = (b[i] - sigma) / A[i, i]
+
+        # Periksa konvergensi
+        if np.linalg.norm(x - x_baru, ord=np.inf) < tol:
+            return x_baru
+
+        x = x_baru
+
+    return x
+
+# Definisi matriks A dan vektor b
+A = np.array([[4, -1, 0], [-1, 4, -1], [0, -1, 4]])
+b = np.array([4, 0, 0])
+
+# Hitung solusi dengan metode Gauss-Seidel
+hasil = gauss_seidel(A, b)
+print("Solusi x:",hasil)
